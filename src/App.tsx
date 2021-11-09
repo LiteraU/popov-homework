@@ -1,25 +1,69 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Container,
+  ErrorMessage,
+  InputLogin,
+  InputPassword,
+  InputComponents,
+  Title,
+  TitleComponents,
+  Wrapper,
+  Login
+} from "./App.styles";
+import {useSignInLogic} from "./Form";
+import {Input} from "./Input";
 
 function App() {
+
+  let {
+    signInForm,
+    errorMessage,
+    emailTouchedError,
+    passwordTouchedError,
+  } = useSignInLogic()
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Wrapper>
+        <Container>
+          <TitleComponents>
+            <Title>Вход</Title>
+          </TitleComponents>
+          <InputComponents>
+            <InputLogin>
+              <Input
+                  placeholder="Введите почту или телефон"
+                  type="login"
+                  name="login"
+                  value={signInForm.values.login}
+                  onChange={signInForm.handleChange}
+                  onBlur={signInForm.handleBlur}
+                  error={emailTouchedError}
+              />
+
+            </InputLogin>
+            <InputPassword>
+              <Input
+
+                  placeholder="Введите пароль"
+                  type="password"
+                  name="password"
+                  value={signInForm.values.password}
+                  onChange={signInForm.handleChange}
+                  onBlur={signInForm.handleBlur}
+                  error={passwordTouchedError}
+              />
+
+            </InputPassword>
+          </InputComponents>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <Login
+              onClick={() => signInForm.handleSubmit()}
+              disabled={!(signInForm.isValid && signInForm.dirty)}
+          >
+            Войти
+          </Login>
+        </Container>
+      </Wrapper>
   );
 }
 
